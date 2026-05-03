@@ -1,0 +1,61 @@
+item_id,item_name,category,type,rarity,damage,range,fire_rate,price,xp_reward,difficulty
+1,Assault Rifle M4,Weapon,Rifle,Common,45,70,80,500,,
+2,Sniper AWM,Weapon,Sniper,Legendary,100,100,20,2000,,
+3,Shotgun S12K,Weapon,Shotgun,Uncommon,80,25,40,700,,
+4,SMG Vector,Weapon,SMG,Rare,35,45,95,900,,
+5,Pistol Desert Eagle,Weapon,Pistol,Common,50,40,55,300,,
+6,LMG M249,Weapon,LMG,Epic,40,60,90,1200,,
+7,Crossbow,Weapon,Crossbow,Rare,90,80,15,800,,
+8,Shotgun DBS,Weapon,Shotgun,Epic,95,20,35,1500,,
+9,Rifle SCAR-L,Weapon,Rifle,Uncommon,43,65,75,600,,
+10,SMG UMP45,Weapon,SMG,Common,38,40,85,400,,
+11,Sniper Kar98k,Weapon,Sniper,Rare,90,95,25,1100,,
+12,Pistol P18C,Weapon,Pistol,Common,28,35,90,200,,
+13,Rifle AKM,Weapon,Rifle,Common,49,62,70,550,,
+14,LMG DP-28,Weapon,LMG,Uncommon,43,65,78,800,,
+15,Sniper Mini-14,Weapon,Sniper,Uncommon,60,88,45,850,,
+16,Grenade Launcher,Weapon,Launcher,Epic,100,50,10,1800,,
+17,Rifle QBZ,Weapon,Rifle,Rare,43,68,77,700,,
+18,SMG Tommy Gun,Weapon,SMG,Legendary,40,42,100,1600,,
+19,Shotgun S1897,Weapon,Shotgun,Common,70,18,30,350,,
+20,Pistol Flare Gun,Weapon,Pistol,Legendary,20,30,5,2500,,
+21,Neon Striker,Skin,Full Outfit,Epic,0,0,0,1400,,
+22,Arctic Ghost,Skin,Full Outfit,Legendary,0,0,0,2200,,
+23,Desert Camo,Skin,Full Outfit,Common,0,0,0,300,,
+24,Shadow Ninja,Skin,Full Outfit,Rare,0,0,0,900,,
+25,Golden Warrior,Skin,Full Outfit,Legendary,0,0,0,2800,,
+26,Cyber Punk,Skin,Full Outfit,Epic,0,0,0,1600,,
+27,Classic Soldier,Skin,Full Outfit,Common,0,0,0,200,,
+28,Fire Dancer,Skin,Full Outfit,Epic,0,0,0,1500,,
+29,Ocean Pirate,Skin,Full Outfit,Rare,0,0,0,1000,,
+30,Mech Suit,Skin,Full Outfit,Legendary,0,0,0,3000,,
+31,Zombie Survivor,Skin,Full Outfit,Rare,0,0,0,850,,
+32,Jungle Scout,Skin,Full Outfit,Uncommon,0,0,0,500,,
+33,Victory Dance Emote,Skin,Emote,Common,0,0,0,150,,
+34,Robot Dance Emote,Skin,Emote,Rare,0,0,0,700,,
+35,Parachute Flames,Skin,Parachute,Epic,0,0,0,1200,,
+36,Parachute Galaxy,Skin,Parachute,Legendary,0,0,0,2000,,
+37,Helmet Crown,Skin,Helmet,Legendary,0,0,0,1800,,
+38,Helmet Skull,Skin,Helmet,Rare,0,0,0,750,,
+39,Vehicle Lava Buggy,Skin,Vehicle,Epic,0,0,0,1700,,
+40,Vehicle Ice Bike,Skin,Vehicle,Rare,0,0,0,1100,,
+41,First Blood,Mission,Kill,Common,0,0,0,0,200.0,Easy
+42,Sniper Elite,Mission,Kill,Rare,0,0,0,0,800.0,Hard
+43,Survive 10 Minutes,Mission,Survival,Common,0,0,0,0,300.0,Easy
+44,Chicken Dinner,Mission,Survival,Legendary,0,0,0,0,2000.0,Extreme
+45,Loot 5 Crates,Mission,Loot,Common,0,0,0,0,250.0,Easy
+46,Headshot Master,Mission,Kill,Epic,0,0,0,0,1200.0,Hard
+47,Squad Wipe,Mission,Kill,Rare,0,0,0,0,900.0,Hard
+48,Land at Hot Zone,Mission,Explore,Uncommon,0,0,0,0,400.0,Medium
+49,Revive 3 Teammates,Mission,Support,Uncommon,0,0,0,0,450.0,Medium
+50,Drive 1km in Vehicle,Mission,Explore,Common,0,0,0,0,200.0,Easy
+51,Use 5 Medkits,Mission,Support,Common,0,0,0,0,180.0,Easy
+52,Kill with Shotgun,Mission,Kill,Uncommon,0,0,0,0,350.0,Medium
+53,Top 10 Finish,Mission,Survival,Uncommon,0,0,0,0,500.0,Medium
+54,Parachute 500m,Mission,Explore,Common,0,0,0,0,150.0,Easy
+55,Kill 3 in One Match,Mission,Kill,Rare,0,0,0,0,700.0,Hard
+56,Destroy 2 Vehicles,Mission,Destroy,Rare,0,0,0,0,650.0,Hard
+57,Collect All Ammo Types,Mission,Loot,Uncommon,0,0,0,0,380.0,Medium
+58,Kill with Flare Gun,Mission,Kill,Epic,0,0,0,0,1000.0,Hard
+59,Win Solo Match,Mission,Survival,Legendary,0,0,0,0,3000.0,Extreme
+60,Explore All Map Zones,Mission,Explore,Epic,0,0,0,0,1500.0,Hard
