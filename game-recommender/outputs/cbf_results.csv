@@ -1,0 +1,501 @@
+player_id,item_name,similarity_score,rank
+1,Shotgun DBS,0.7581,1
+1,LMG M249,0.6653,2
+1,Sniper Kar98k,0.5501,3
+1,Crossbow,0.5402,4
+1,Shotgun S12K,0.4948,5
+2,Sniper AWM,0.4261,1
+2,Grenade Launcher,0.4206,2
+2,Sniper Kar98k,0.4114,3
+2,Shotgun DBS,0.4037,4
+2,Rifle SCAR-L,0.389,5
+3,Collect All Ammo Types,0.5,1
+3,Land at Hot Zone,0.4167,2
+3,Top 10 Finish,0.4167,3
+3,First Blood,0.4167,4
+3,Use 5 Medkits,0.4167,5
+4,Sniper Elite,0.4167,1
+4,Headshot Master,0.4125,2
+4,Kill with Flare Gun,0.4125,3
+4,First Blood,0.3333,4
+4,Land at Hot Zone,0.3229,5
+5,Parachute 500m,0.6516,1
+5,Pistol Desert Eagle,0.5033,2
+5,Rifle AKM,0.488,3
+5,Use 5 Medkits,0.4849,4
+5,Loot 5 Crates,0.4849,5
+6,Classic Soldier,0.4177,1
+6,Loot 5 Crates,0.4165,2
+6,Use 5 Medkits,0.4165,3
+6,Drive 1km in Vehicle,0.4165,4
+6,Pistol Desert Eagle,0.3459,5
+7,Top 10 Finish,0.3166,1
+7,Land at Hot Zone,0.3166,2
+7,Shotgun DBS,0.3039,3
+7,Win Solo Match,0.2778,4
+7,Headshot Master,0.2759,5
+8,Assault Rifle M4,0.5784,1
+8,Rifle AKM,0.5748,2
+8,SMG Tommy Gun,0.5348,3
+8,SMG Vector,0.5211,4
+8,LMG DP-28,0.4634,5
+9,Survive 10 Minutes,0.4051,1
+9,Rifle AKM,0.3831,2
+9,Assault Rifle M4,0.3828,3
+9,Pistol Desert Eagle,0.3744,4
+9,SMG Tommy Gun,0.3703,5
+10,Rifle AKM,0.3779,1
+10,SMG Tommy Gun,0.3641,2
+10,Sniper AWM,0.3602,3
+10,LMG M249,0.3565,4
+10,Grenade Launcher,0.345,5
+11,Pistol Desert Eagle,0.4058,1
+11,Desert Camo,0.3414,2
+11,Classic Soldier,0.3388,3
+11,Parachute 500m,0.3333,4
+11,Survive 10 Minutes,0.3333,5
+12,Squad Wipe,0.6667,1
+12,Kill 3 in One Match,0.6667,2
+12,Sniper Elite,0.6667,3
+12,First Blood,0.5,4
+12,Headshot Master,0.5,5
+13,Vehicle Ice Bike,0.4702,1
+13,Ocean Pirate,0.4695,2
+13,Shadow Ninja,0.4679,3
+13,Zombie Survivor,0.4671,4
+13,Cyber Punk,0.417,5
+14,Golden Warrior,0.9956,1
+14,Mech Suit,0.9924,2
+14,Helmet Crown,0.7077,3
+14,Cyber Punk,0.7015,4
+14,Fire Dancer,0.698,5
+15,Crossbow,0.3775,1
+15,Sniper Kar98k,0.3746,2
+15,Shotgun DBS,0.373,3
+15,Rifle QBZ,0.3681,4
+15,Shotgun S1897,0.3651,5
+16,Chicken Dinner,0.3333,1
+16,Survive 10 Minutes,0.3333,2
+16,First Blood,0.3333,3
+16,Revive 3 Teammates,0.3333,4
+16,Top 10 Finish,0.3333,5
+17,Sniper Elite,0.4844,1
+17,Kill 3 in One Match,0.4844,2
+17,Kill with Flare Gun,0.4005,3
+17,Headshot Master,0.4005,4
+17,Sniper Kar98k,0.3988,5
+18,Rifle QBZ,0.5797,1
+18,Sniper Kar98k,0.5721,2
+18,Squad Wipe,0.5162,3
+18,SMG Tommy Gun,0.4013,4
+18,SMG UMP45,0.394,5
+19,Crossbow,0.4404,1
+19,SMG Tommy Gun,0.423,2
+19,Sniper AWM,0.4199,3
+19,LMG M249,0.3866,4
+19,Sniper Mini-14,0.3683,5
+20,Vehicle Lava Buggy,0.6873,1
+20,Parachute Galaxy,0.687,2
+20,Cyber Punk,0.687,3
+20,Fire Dancer,0.6865,4
+20,Mech Suit,0.3938,5
+21,Fire Dancer,0.4237,1
+21,Neon Striker,0.423,2
+21,Arctic Ghost,0.3553,3
+21,Golden Warrior,0.3551,4
+21,Mech Suit,0.3544,5
+22,Ocean Pirate,0.4345,1
+22,Shadow Ninja,0.4334,2
+22,Zombie Survivor,0.4328,3
+22,Kill 3 in One Match,0.4262,4
+22,Squad Wipe,0.4262,5
+23,Assault Rifle M4,0.5174,1
+23,Rifle AKM,0.5139,2
+23,LMG M249,0.4599,3
+23,SMG Vector,0.4363,4
+23,Sniper Mini-14,0.433,5
+24,Drive 1km in Vehicle,0.5,1
+24,Pistol Desert Eagle,0.4584,2
+24,Pistol P18C,0.4325,3
+24,Sniper AWM,0.3346,4
+24,First Blood,0.3333,5
+25,Sniper AWM,0.4851,1
+25,Pistol Flare Gun,0.4738,2
+25,Shotgun DBS,0.4255,3
+25,Rifle AKM,0.4133,4
+25,SMG Vector,0.4126,5
+26,Headshot Master,0.4967,1
+26,Sniper Elite,0.4028,2
+26,Squad Wipe,0.4028,3
+26,Cyber Punk,0.3402,4
+26,Neon Striker,0.3398,5
+27,Rifle AKM,0.4355,1
+27,Desert Camo,0.4229,2
+27,Classic Soldier,0.421,3
+27,SMG UMP45,0.3521,4
+27,Pistol P18C,0.3462,5
+28,Crossbow,0.3775,1
+28,Sniper Kar98k,0.3746,2
+28,Shotgun DBS,0.373,3
+28,Rifle QBZ,0.3681,4
+28,Shotgun S1897,0.3651,5
+29,Golden Warrior,0.4881,1
+29,Mech Suit,0.4861,2
+29,Jungle Scout,0.4186,3
+29,Desert Camo,0.4129,4
+29,Cyber Punk,0.3583,5
+30,Ocean Pirate,0.4508,1
+30,Shadow Ninja,0.4505,2
+30,Sniper Elite,0.443,3
+30,Squad Wipe,0.443,4
+30,Sniper Kar98k,0.4386,5
+31,Mech Suit,0.5233,1
+31,Golden Warrior,0.5232,2
+31,Fire Dancer,0.4479,3
+31,Neon Striker,0.4454,4
+31,Desert Camo,0.3977,5
+32,Pistol Desert Eagle,0.478,1
+32,Shotgun S1897,0.4659,2
+32,SMG Vector,0.4162,3
+32,LMG M249,0.4068,4
+32,Rifle AKM,0.4008,5
+33,Desert Camo,0.486,1
+33,Classic Soldier,0.4829,2
+33,Arctic Ghost,0.4397,3
+33,Cyber Punk,0.4377,4
+33,Mech Suit,0.4376,5
+34,Golden Warrior,0.5911,1
+34,Mech Suit,0.5887,2
+34,Cyber Punk,0.5184,3
+34,Fire Dancer,0.5171,4
+34,Ocean Pirate,0.5094,5
+35,Desert Camo,0.5078,1
+35,Arctic Ghost,0.4792,2
+35,Mech Suit,0.478,3
+35,Assault Rifle M4,0.4046,4
+35,Victory Dance Emote,0.3772,5
+36,Arctic Ghost,0.4931,1
+36,Golden Warrior,0.4919,2
+36,Cyber Punk,0.4916,3
+36,Fire Dancer,0.4905,4
+36,Shadow Ninja,0.4362,5
+37,Sniper Kar98k,0.4651,1
+37,Ocean Pirate,0.4388,2
+37,Shadow Ninja,0.4367,3
+37,Crossbow,0.4112,4
+37,Rifle QBZ,0.3863,5
+38,Rifle AKM,0.4907,1
+38,Pistol Desert Eagle,0.4808,2
+38,Shotgun S1897,0.4755,3
+38,SMG Vector,0.4562,4
+38,Pistol P18C,0.45,5
+39,Golden Warrior,0.356,1
+39,Arctic Ghost,0.3523,2
+39,Cyber Punk,0.3502,3
+39,Vehicle Ice Bike,0.3489,4
+39,Fire Dancer,0.3486,5
+40,Assault Rifle M4,0.4025,1
+40,Rifle AKM,0.4024,2
+40,Rifle SCAR-L,0.402,3
+40,SMG UMP45,0.3899,4
+40,SMG Vector,0.3882,5
+41,Assault Rifle M4,0.515,1
+41,LMG DP-28,0.5139,2
+41,Rifle AKM,0.5111,3
+41,Shotgun S12K,0.4719,4
+41,SMG Tommy Gun,0.4564,5
+42,Arctic Ghost,0.4174,1
+42,Desert Camo,0.4037,2
+42,Ocean Pirate,0.3705,3
+42,Shadow Ninja,0.3687,4
+42,Zombie Survivor,0.3677,5
+43,Mech Suit,0.622,1
+43,Cyber Punk,0.5295,2
+43,Neon Striker,0.5249,3
+43,Ocean Pirate,0.461,4
+43,Shadow Ninja,0.4574,5
+44,Ocean Pirate,0.4196,1
+44,Shadow Ninja,0.4169,2
+44,Zombie Survivor,0.4155,3
+44,Arctic Ghost,0.3993,4
+44,SMG Tommy Gun,0.369,5
+45,Cyber Punk,0.4824,1
+45,Fire Dancer,0.4808,2
+45,Neon Striker,0.479,3
+45,Ocean Pirate,0.4716,4
+45,Shadow Ninja,0.469,5
+46,Assault Rifle M4,0.4895,1
+46,Pistol Desert Eagle,0.4888,2
+46,Shotgun S1897,0.482,3
+46,Pistol P18C,0.4685,4
+46,Drive 1km in Vehicle,0.429,5
+47,Kill with Flare Gun,0.482,1
+47,Explore All Map Zones,0.482,2
+47,Grenade Launcher,0.3422,3
+47,Cyber Punk,0.338,4
+47,Fire Dancer,0.3373,5
+48,Squad Wipe,0.3322,1
+48,Sniper Elite,0.3322,2
+48,Kill 3 in One Match,0.3322,3
+48,Kill with Flare Gun,0.3118,4
+48,Headshot Master,0.3118,5
+49,Desert Camo,0.4435,1
+49,Rifle AKM,0.4114,2
+49,Pistol P18C,0.4043,3
+49,SMG UMP45,0.3591,4
+49,Shotgun S1897,0.3431,5
+50,Kill 3 in One Match,0.5313,1
+50,Ocean Pirate,0.411,2
+50,Shadow Ninja,0.4102,3
+50,Zombie Survivor,0.4097,4
+50,Helmet Skull,0.4087,5
+51,Jungle Scout,0.3393,1
+51,Top 10 Finish,0.3333,2
+51,Kill with Shotgun,0.3333,3
+51,Land at Hot Zone,0.3333,4
+51,LMG DP-28,0.2785,5
+52,Golden Warrior,0.547,1
+52,Mech Suit,0.5439,2
+52,Classic Soldier,0.5281,3
+52,Cyber Punk,0.4579,4
+52,Fire Dancer,0.4571,5
+53,Ocean Pirate,0.474,1
+53,Shadow Ninja,0.4733,2
+53,Arctic Ghost,0.406,3
+53,Golden Warrior,0.4007,4
+53,Desert Camo,0.3996,5
+54,Ocean Pirate,0.7313,1
+54,Golden Warrior,0.666,2
+54,Mech Suit,0.6623,3
+54,Classic Soldier,0.6025,4
+54,Cyber Punk,0.5778,5
+55,Use 5 Medkits,0.4054,1
+55,Collect All Ammo Types,0.3333,2
+55,Pistol Desert Eagle,0.3223,3
+55,Drive 1km in Vehicle,0.322,4
+55,First Blood,0.322,5
+56,Assault Rifle M4,0.4294,1
+56,Desert Camo,0.4289,2
+56,Drive 1km in Vehicle,0.4278,3
+56,Classic Soldier,0.4276,4
+56,Rifle QBZ,0.3517,5
+57,Assault Rifle M4,0.5228,1
+57,Rifle AKM,0.5187,2
+57,SMG UMP45,0.5164,3
+57,Rifle QBZ,0.5071,4
+57,Pistol P18C,0.4317,5
+58,Pistol Flare Gun,0.3383,1
+58,Golden Warrior,0.3371,2
+58,Mech Suit,0.3364,3
+58,Pistol Desert Eagle,0.3328,4
+58,Jungle Scout,0.3278,5
+59,Golden Warrior,0.3592,1
+59,Arctic Ghost,0.3588,2
+59,Mech Suit,0.3587,3
+59,Cyber Punk,0.3469,4
+59,Fire Dancer,0.3458,5
+60,Golden Warrior,0.3549,1
+60,Mech Suit,0.3546,2
+60,Arctic Ghost,0.3539,3
+60,Parachute Galaxy,0.3527,4
+60,Jungle Scout,0.3383,5
+61,Shadow Ninja,0.676,1
+61,Neon Striker,0.6744,2
+61,Fire Dancer,0.6742,3
+61,Cyber Punk,0.6738,4
+61,Desert Camo,0.6667,5
+62,Win Solo Match,0.4444,1
+62,Top 10 Finish,0.4249,2
+62,Sniper Kar98k,0.344,3
+62,Sniper AWM,0.3367,4
+62,Sniper Elite,0.3333,5
+63,Drive 1km in Vehicle,0.3333,1
+63,Parachute 500m,0.3333,2
+63,Revive 3 Teammates,0.3333,3
+63,Explore All Map Zones,0.3292,4
+63,Sniper Mini-14,0.272,5
+64,Shotgun DBS,0.386,1
+64,SMG UMP45,0.3749,2
+64,Shotgun S1897,0.3671,3
+64,Parachute Galaxy,0.3476,4
+64,Rifle AKM,0.3212,5
+65,Shadow Ninja,0.3831,1
+65,Squad Wipe,0.3317,2
+65,Kill 3 in One Match,0.3317,3
+65,Vehicle Ice Bike,0.3041,4
+65,Helmet Skull,0.3005,5
+66,Sniper Elite,0.3985,1
+66,Squad Wipe,0.3985,2
+66,First Blood,0.3333,3
+66,Ocean Pirate,0.3228,4
+66,Shadow Ninja,0.3212,5
+67,Sniper Kar98k,0.6121,1
+67,LMG M249,0.6119,2
+67,Rifle AKM,0.6084,3
+67,Assault Rifle M4,0.6067,4
+67,Rifle SCAR-L,0.6053,5
+68,Zombie Survivor,0.4176,1
+68,Desert Camo,0.4166,2
+68,Kill with Shotgun,0.4163,3
+68,Classic Soldier,0.4157,4
+68,Neon Striker,0.3361,5
+69,Rifle AKM,0.5809,1
+69,LMG DP-28,0.5131,2
+69,Rifle SCAR-L,0.5116,3
+69,SMG UMP45,0.5075,4
+69,Pistol Desert Eagle,0.4982,5
+70,SMG Tommy Gun,0.3771,1
+70,Arctic Ghost,0.368,2
+70,Sniper AWM,0.3402,3
+70,Pistol Flare Gun,0.3362,4
+70,Desert Camo,0.3152,5
+71,Drive 1km in Vehicle,0.3333,1
+71,Loot 5 Crates,0.3333,2
+71,Land at Hot Zone,0.3331,3
+71,Top 10 Finish,0.3331,4
+71,Desert Camo,0.2826,5
+72,Mech Suit,0.3697,1
+72,Arctic Ghost,0.3624,2
+72,Parachute Galaxy,0.3048,3
+72,Cyber Punk,0.2873,4
+72,Fire Dancer,0.2849,5
+73,Shadow Ninja,0.5057,1
+73,Zombie Survivor,0.5055,2
+73,Vehicle Ice Bike,0.4263,3
+73,Robot Dance Emote,0.4233,4
+73,Sniper Elite,0.4143,5
+74,Golden Warrior,0.5204,1
+74,Mech Suit,0.5193,2
+74,Fire Dancer,0.5171,3
+74,Neon Striker,0.5156,4
+74,Ocean Pirate,0.5094,5
+75,Sniper Kar98k,0.6374,1
+75,LMG DP-28,0.6215,2
+75,Rifle QBZ,0.6213,3
+75,Grenade Launcher,0.6027,4
+75,SMG Vector,0.5979,5
+76,Ocean Pirate,0.5317,1
+76,Zombie Survivor,0.5302,2
+76,Classic Soldier,0.5217,3
+76,Cyber Punk,0.4786,4
+76,Neon Striker,0.4782,5
+77,Rifle AKM,0.3759,1
+77,Assault Rifle M4,0.3747,2
+77,SMG Vector,0.3705,3
+77,SMG Tommy Gun,0.3368,4
+77,Sniper Kar98k,0.333,5
+78,Arctic Ghost,0.4116,1
+78,Parachute Galaxy,0.3176,2
+78,SMG Tommy Gun,0.3135,3
+78,Cyber Punk,0.3127,4
+78,Sniper AWM,0.3126,5
+79,SMG Tommy Gun,0.475,1
+79,Rifle QBZ,0.3904,2
+79,Rifle AKM,0.3851,3
+79,SMG UMP45,0.3822,4
+79,Sniper AWM,0.3795,5
+80,Parachute 500m,0.4444,1
+80,Drive 1km in Vehicle,0.4444,2
+80,Headshot Master,0.4444,3
+80,Squad Wipe,0.4236,4
+80,Kill 3 in One Match,0.4236,5
+81,Assault Rifle M4,0.4671,1
+81,Pistol Desert Eagle,0.4183,2
+81,SMG UMP45,0.3842,3
+81,Shotgun S1897,0.3505,4
+81,LMG DP-28,0.3497,5
+82,Pistol Flare Gun,0.362,1
+82,Golden Warrior,0.3414,2
+82,Arctic Ghost,0.3375,3
+82,Pistol P18C,0.3316,4
+82,Use 5 Medkits,0.322,5
+83,Cyber Punk,0.4306,1
+83,Fire Dancer,0.4284,2
+83,Neon Striker,0.4261,3
+83,Golden Warrior,0.3766,4
+83,Parachute Galaxy,0.373,5
+84,Loot 5 Crates,0.4081,1
+84,Kill with Shotgun,0.3333,2
+84,Survive 10 Minutes,0.3248,3
+84,Drive 1km in Vehicle,0.3248,4
+84,Use 5 Medkits,0.3248,5
+85,Cyber Punk,0.351,1
+85,Fire Dancer,0.3489,2
+85,Neon Striker,0.3466,3
+85,Shotgun DBS,0.3287,4
+85,Jungle Scout,0.3245,5
+86,Desert Camo,0.5607,1
+86,Arctic Ghost,0.5403,2
+86,Golden Warrior,0.5295,3
+86,Mech Suit,0.5251,4
+86,Fire Dancer,0.4612,5
+87,Sniper Elite,0.5347,1
+87,Squad Wipe,0.5347,2
+87,Destroy 2 Vehicles,0.4236,3
+87,Sniper Kar98k,0.3484,4
+87,First Blood,0.3333,5
+88,Shotgun DBS,0.685,1
+88,Grenade Launcher,0.6653,2
+88,SMG Tommy Gun,0.5544,3
+88,Assault Rifle M4,0.5394,4
+88,Rifle QBZ,0.5389,5
+89,SMG Vector,0.7563,1
+89,Pistol P18C,0.7495,2
+89,Rifle AKM,0.7455,3
+89,Pistol Desert Eagle,0.7295,4
+89,Shotgun S1897,0.6812,5
+90,Pistol Desert Eagle,0.4283,1
+90,SMG UMP45,0.3487,2
+90,Rifle AKM,0.3435,3
+90,Assault Rifle M4,0.3431,4
+90,Shotgun S1897,0.3256,5
+91,Zombie Survivor,0.471,1
+91,Neon Striker,0.4092,2
+91,Fire Dancer,0.4091,3
+91,Cyber Punk,0.4089,4
+91,Robot Dance Emote,0.406,5
+92,Shadow Ninja,0.4175,1
+92,Zombie Survivor,0.4175,2
+92,Neon Striker,0.4172,3
+92,Fire Dancer,0.4164,4
+92,Cyber Punk,0.4156,5
+93,Ocean Pirate,0.5051,1
+93,Shadow Ninja,0.5029,2
+93,Zombie Survivor,0.5018,3
+93,Helmet Crown,0.439,4
+93,Mech Suit,0.4357,5
+94,Golden Warrior,0.444,1
+94,Jungle Scout,0.426,2
+94,Fire Dancer,0.3999,3
+94,Neon Striker,0.3987,4
+94,Desert Camo,0.3747,5
+95,Sniper Kar98k,0.6374,1
+95,LMG DP-28,0.6215,2
+95,Rifle QBZ,0.6213,3
+95,Grenade Launcher,0.6027,4
+95,SMG Vector,0.5979,5
+96,Sniper Elite,0.4861,1
+96,Kill 3 in One Match,0.4861,2
+96,Zombie Survivor,0.4054,3
+96,Shadow Ninja,0.4052,4
+96,Ocean Pirate,0.4048,5
+97,Mech Suit,0.516,1
+97,Golden Warrior,0.514,2
+97,Arctic Ghost,0.5048,3
+97,Parachute Flames,0.4642,4
+97,Pistol Flare Gun,0.4204,5
+98,Chicken Dinner,0.6575,1
+98,Parachute Galaxy,0.5083,2
+98,Golden Warrior,0.5016,3
+98,Mech Suit,0.4989,4
+98,Pistol Flare Gun,0.3567,5
+99,Parachute 500m,0.5,1
+99,Fire Dancer,0.4999,2
+99,Cyber Punk,0.4997,3
+99,Desert Camo,0.4952,4
+99,Explore All Map Zones,0.4943,5
+100,Desert Camo,0.4194,1
+100,Cyber Punk,0.3908,2
+100,Fire Dancer,0.3905,3
+100,Neon Striker,0.39,4
+100,Shadow Ninja,0.387,5
