@@ -5,7 +5,7 @@ player_id,item_id,item_name,predicted_score,rank
 1,17,Rifle QBZ,3.977300030042672,4
 1,8,Shotgun DBS,3.952507926053337,5
 2,25,Golden Warrior,4.148660686263964,1
-2,31,Zombie Survivor,4.127339591521093,2
+2,31,Zombie Survivor,4.1273395915210935,2
 2,34,Robot Dance Emote,4.032892885278514,3
 2,17,Rifle QBZ,3.9791794977380426,4
 2,38,Helmet Skull,3.93546530988671,5
@@ -62,7 +62,7 @@ player_id,item_id,item_name,predicted_score,rank
 13,31,Zombie Survivor,4.153797416147275,1
 13,25,Golden Warrior,4.127723534009002,2
 13,18,SMG Tommy Gun,3.9963727954844064,3
-13,8,Shotgun DBS,3.9693538519546747,4
+13,8,Shotgun DBS,3.969353851954675,4
 13,23,Desert Camo,3.9685404703050744,5
 14,31,Zombie Survivor,3.830460432125111,1
 14,25,Golden Warrior,3.7612276724050893,2
@@ -82,7 +82,7 @@ player_id,item_id,item_name,predicted_score,rank
 17,25,Golden Warrior,4.439637131053646,1
 17,31,Zombie Survivor,4.410363110349402,2
 17,17,Rifle QBZ,4.256018565956227,3
-17,37,Helmet Crown,4.209032958696351,4
+17,37,Helmet Crown,4.20903295869635,4
 17,3,Shotgun S12K,4.179074917943039,5
 18,31,Zombie Survivor,4.004069785874653,1
 18,25,Golden Warrior,3.96347891389137,2
@@ -209,7 +209,7 @@ player_id,item_id,item_name,predicted_score,rank
 42,17,Rifle QBZ,4.423267196421002,3
 42,34,Robot Dance Emote,4.414568951032098,4
 42,39,Vehicle Lava Buggy,4.378383626666235,5
-43,31,Zombie Survivor,4.379996801545418,1
+43,31,Zombie Survivor,4.379996801545419,1
 43,39,Vehicle Lava Buggy,4.241768422480225,2
 43,34,Robot Dance Emote,4.222124606104789,3
 43,51,Use 5 Medkits,4.220308356038909,4
@@ -346,7 +346,7 @@ player_id,item_id,item_name,predicted_score,rank
 69,18,SMG Tommy Gun,4.049934110482004,5
 70,18,SMG Tommy Gun,3.9010994125734797,1
 70,34,Robot Dance Emote,3.862412555255648,2
-70,39,Vehicle Lava Buggy,3.8531785193609,3
+70,39,Vehicle Lava Buggy,3.8531785193609003,3
 70,27,Classic Soldier,3.8173729995804035,4
 70,1,Assault Rifle M4,3.8001512204524968,5
 71,25,Golden Warrior,4.531451728344046,1
@@ -363,11 +363,11 @@ player_id,item_id,item_name,predicted_score,rank
 73,31,Zombie Survivor,3.843113187955161,2
 73,17,Rifle QBZ,3.7970924645484425,3
 73,39,Vehicle Lava Buggy,3.790192403870447,4
-73,10,SMG UMP45,3.7586127063610375,5
+73,10,SMG UMP45,3.758612706361037,5
 74,25,Golden Warrior,4.169721944718197,1
 74,31,Zombie Survivor,4.161138417783676,2
 74,34,Robot Dance Emote,4.150662751701106,3
-74,8,Shotgun DBS,4.096163398768158,4
+74,8,Shotgun DBS,4.096163398768159,4
 74,39,Vehicle Lava Buggy,4.053982260283647,5
 75,31,Zombie Survivor,3.8023258344301674,1
 75,25,Golden Warrior,3.742434937572365,2
@@ -417,7 +417,7 @@ player_id,item_id,item_name,predicted_score,rank
 84,25,Golden Warrior,4.103869324013537,1
 84,31,Zombie Survivor,4.081695883128812,2
 84,18,SMG Tommy Gun,3.993626941451693,3
-84,17,Rifle QBZ,3.9887050207124712,4
+84,17,Rifle QBZ,3.9887050207124717,4
 84,38,Helmet Skull,3.944956850182295,5
 85,44,Chicken Dinner,4.322950633560561,1
 85,31,Zombie Survivor,4.320633790517276,2
@@ -453,7 +453,7 @@ player_id,item_id,item_name,predicted_score,rank
 91,25,Golden Warrior,4.153922578843447,2
 91,17,Rifle QBZ,4.084959546440632,3
 91,44,Chicken Dinner,4.056679577755362,4
-91,39,Vehicle Lava Buggy,4.056412139449961,5
+91,39,Vehicle Lava Buggy,4.056412139449962,5
 92,25,Golden Warrior,4.315766869454272,1
 92,31,Zombie Survivor,4.218676239848626,2
 92,34,Robot Dance Emote,4.146149053116389,3
@@ -465,7 +465,7 @@ player_id,item_id,item_name,predicted_score,rank
 93,8,Shotgun DBS,4.0276791510244205,4
 93,33,Victory Dance Emote,4.026434261232113,5
 94,25,Golden Warrior,4.269640665984096,1
-94,31,Zombie Survivor,4.122576856880128,2
+94,31,Zombie Survivor,4.122576856880127,2
 94,38,Helmet Skull,4.100380449915831,3
 94,44,Chicken Dinner,4.074980957326822,4
 94,34,Robot Dance Emote,4.056166452694472,5
