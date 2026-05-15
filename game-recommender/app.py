@@ -132,16 +132,14 @@ html, body, [class*="css"] { font-family: 'DM Sans', sans-serif; }
 """, unsafe_allow_html=True)
 
 
-# ── Metric values — 04_evaluation.ipynb run කරලා ලැබෙන values මෙතනට paste කරන්න ──
-CF_RMSE       = 1.0486   # ← ඔයාගේ actual value paste කරන්න
-CF_MAE        = 0.8353   # ← ඔයාගේ actual value paste කරන්න
-CF_PRECISION  = 0.0000   # ← ඔයාගේ actual value paste කරන්න
-CF_RECALL     = 0.0000   # ← ඔයාගේ actual value paste කරන්න
-CBF_PRECISION = 0.0000   # ← ඔයාගේ actual value paste කරන්න
-CBF_RECALL    = 0.0000   # ← ඔයාගේ actual value paste කරන්න
-
-
-# ── Load data & models ────────────────────────────────────────────────────────
+# ── Metric values — 04_evaluation.ipynb 
+CF_RMSE       = 1.1673  
+CF_MAE        = 1.0330  
+CF_PRECISION  = 0.0357  
+CF_RECALL     = 0.1696   
+CBF_PRECISION = 0.0000   
+CBF_RECALL    = 0.0000   
+# ────────────────────────────────────────
 @st.cache_data
 def load_data():
     interactions = pd.read_csv('data/interactions.csv')
