@@ -1,368 +1,688 @@
+# Game Recommendation System — Streamlit Dashboard
 import streamlit as st
+import streamlit.components.v1 as components
 import pandas as pd
-import numpy as np
-import pickle
-import os
 
-# ── Page config — MUST be first Streamlit command ─────────────────────────────
 st.set_page_config(
-    page_title="GameRec – Item Recommender",
+    page_title="GameRec System",
     page_icon="🎮",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-# ── Custom CSS (matches mockup design) ────────────────────────────────────────
-st.markdown("""
+st.markdown(
+    """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+html, body, [class*="css"] {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
 
-html, body, [class*="css"] { font-family: 'DM Sans', sans-serif; }
-#MainMenu, footer, header { visibility: hidden; }
+[data-testid="stHeader"] {
+    display: none !important;
+}
 
-/* Sidebar */
+html, body, #root, .stApp, [data-testid="stAppViewContainer"], .main, .block-container {
+    overflow: hidden !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+}
+
+[data-testid="stAppViewContainer"] {
+    background-color: #f0f2f6 !important;
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+.main .block-container {
+    padding: 0rem 1.5rem 1rem 1rem !important;
+    padding-top: 0rem !important;
+    margin-top: -7.5rem !important;
+    max-width: 100% !important;
+}
+
+/* Push the very first element flush to top */
+section.main > div:first-child {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+/* Force first vertical block element to the top */
+div[data-testid="stVerticalBlock"] > div:first-child,
+div[data-testid="stVerticalBlock"] > div:first-child > div,
+[data-testid="stAppViewBlockContainer"] > div:first-child {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+.main iframe {
+    border: none !important;
+}
+
+/* Hide sidebar collapse chevron (<<) — Streamlit 1.50 */
+[data-testid="stSidebarCollapseButton"],
+[data-testid="collapsedControl"],
+[data-testid="stSidebarCollapsedControl"] {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+}
+
+/* Keep sidebar always expanded */
+section[data-testid="stSidebar"] {
+    transform: none !important;
+    margin-left: 0 !important;
+    visibility: visible !important;
+}
+
+/* ── Sidebar ── */
 [data-testid="stSidebar"] {
-    background: #F7F7F8 !important;
-    border-right: 0.5px solid #E4E4E7 !important;
-}
-[data-testid="stSidebar"] > div:first-child { padding-top: 1.5rem; }
-[data-testid="stSidebar"] .stButton button {
-    width: 100%; background: #378ADD !important; color: white !important;
-    border: none !important; border-radius: 8px !important;
-    font-size: 13px !important; font-weight: 500 !important;
-    padding: 0.55rem 0 !important; margin-top: 0.5rem;
-}
-[data-testid="stSidebar"] .stButton button:hover { opacity: 0.88 !important; }
-[data-testid="stSidebar"] .stSelectbox label,
-[data-testid="stSidebar"] .stRadio label,
-[data-testid="stSidebar"] .stSlider label {
-    font-size: 10.5px !important; font-weight: 500 !important;
-    color: #A1A1AA !important; text-transform: uppercase; letter-spacing: 0.06em;
+    background-color: #ffffff !important;
+    border-right: 1px solid #e8eaef !important;
+    min-width: 300px !important;
+    width: 300px !important;
 }
 
-/* Main */
-.block-container { padding: 1.75rem 2rem 2rem !important; max-width: 100% !important; }
-
-/* Page title */
-.page-title { font-size: 20px; font-weight: 600; color: #18181B; margin: 0 0 2px; }
-.page-sub   { font-size: 13px; color: #71717A; margin: 0 0 1.25rem; }
-
-/* Player banner */
-.player-banner {
-    background: #F7F7F8; border: 0.5px solid #E4E4E7; border-radius: 12px;
-    padding: 0.85rem 1.1rem; display: flex; align-items: center;
-    gap: 13px; margin-bottom: 1.25rem;
-}
-.avatar {
-    width: 40px; height: 40px; border-radius: 50%; background: #E6F1FB;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 600; color: #185FA5; flex-shrink: 0;
-}
-.player-name  { font-size: 14px; font-weight: 600; color: #18181B; }
-.player-meta  { font-size: 12px; color: #71717A; margin-top: 2px; }
-.badge        { display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: 11px; font-weight: 500; margin-left: 6px; }
-.badge-aggressive { background: #FAEEDA; color: #854F0B; }
-.badge-explorer   { background: #E6F1FB; color: #185FA5; }
-.badge-support    { background: #E1F5EE; color: #085041; }
-.badge-collector  { background: #EEEDFE; color: #3C3489; }
-.badge-sniper     { background: #F1EFE8; color: #444441; }
-.model-badge-label { font-size: 11px; color: #A1A1AA; }
-.model-badge       { font-size: 12px; font-weight: 500; color: #185FA5; }
-
-/* Metric cards */
-.metric-card { background: #F7F7F8; border: 0.5px solid #E4E4E7; border-radius: 10px; padding: 0.7rem 0.95rem; }
-.metric-label { font-size: 11px; color: #A1A1AA; margin-bottom: 2px; }
-.metric-val   { font-size: 22px; font-weight: 600; color: #18181B; }
-
-/* Section title */
-.section-title {
-    font-size: 12px; font-weight: 500; color: #71717A;
-    text-transform: uppercase; letter-spacing: 0.05em; margin: 0.5rem 0 0.65rem;
+[data-testid="stSidebar"] > div {
+    overflow-y: hidden !important;
+    scrollbar-width: none !important;
 }
 
-/* Item cards */
-.item-card {
-    background: #FFFFFF; border: 0.5px solid #E4E4E7; border-radius: 12px;
-    padding: 0.75rem 1rem; display: flex; align-items: center;
-    gap: 13px; margin-bottom: 7px;
+[data-testid="stSidebar"] > div::-webkit-scrollbar {
+    display: none !important;
 }
-.rank      { font-size: 13px; font-weight: 500; color: #A1A1AA; min-width: 20px; }
-.item-icon {
-    width: 34px; height: 34px; border-radius: 9px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 17px; flex-shrink: 0;
+
+[data-testid="stSidebar"], [data-testid="stSidebar"] * {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
-.item-name { font-size: 13px; font-weight: 600; color: #18181B; }
-.item-type { font-size: 11px; color: #A1A1AA; }
-.stat-row  { display: flex; gap: 6px; margin-top: 4px; flex-wrap: wrap; }
-.stat      { font-size: 11px; color: #52525B; background: #F4F4F5; padding: 2px 7px; border-radius: 5px; }
 
-/* Rarity */
-.rarity           { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
-.rarity-Common    { background: #F1EFE8; color: #444441; }
-.rarity-Uncommon  { background: #E1F5EE; color: #085041; }
-.rarity-Rare      { background: #E6F1FB; color: #0C447C; }
-.rarity-Epic      { background: #EEEDFE; color: #3C3489; }
-.rarity-Legendary { background: #FAEEDA; color: #633806; }
-
-/* Score bar */
-.score-wrap   { display: flex; align-items: center; gap: 7px; min-width: 90px; }
-.score-bar-bg { flex: 1; height: 5px; background: #F0F0F0; border-radius: 10px; overflow: hidden; }
-.score-bar    { height: 100%; border-radius: 10px; background: #378ADD; }
-.score-val    { font-size: 12px; font-weight: 500; color: #52525B; min-width: 32px; text-align: right; }
-
-/* Tabs */
-.stTabs [data-baseweb="tab-list"] { gap: 6px; background: transparent !important; border-bottom: 0.5px solid #E4E4E7 !important; }
-.stTabs [data-baseweb="tab"] {
-    border-radius: 20px 20px 0 0 !important; font-size: 12px !important;
-    font-weight: 500 !important; padding: 6px 14px !important;
-    border: 0.5px solid transparent !important;
-    background: transparent !important; color: #71717A !important;
+[data-testid="stSidebar"] > div:first-child {
+    padding: 0rem 1rem 1.5rem 1rem !important;
+    margin-top: 0 !important;
 }
-.stTabs [aria-selected="true"] { background: #E6F1FB !important; border-color: #378ADD !important; color: #185FA5 !important; }
-.stTabs [data-baseweb="tab-panel"] { padding-top: 1rem !important; }
 
-/* Stats bar */
-.stats-bar { font-size: 11px; color: #A1A1AA; border-top: 0.5px solid #E4E4E7; padding-top: 0.75rem; margin-top: 0.5rem; }
+[data-testid="stSidebar"] > div > div:first-child,
+[data-testid="stSidebar"] section > div:first-child,
+[data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
 
-/* Sidebar logo */
-.sidebar-logo { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; color: #18181B; margin-bottom: 1.75rem; padding: 0 0.25rem; }
-.logo-box { width: 26px; height: 26px; background: #378ADD; border-radius: 7px; display: inline-block; }
+[data-testid="stSidebar"] > div > div > div:first-child {
+    margin-top: -1rem !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p {
+    margin: 0 !important;
+}
+
+.sidebar-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin: 0.85rem 0 0.15rem 0.1rem;
+    display: block;
+}
+.sidebar-label .k-value {
+    float: right;
+    color: #2e75d1;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: none;
+    font-size: 11px;
+}
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 1.1rem;
+    margin-bottom: 0.25rem;
+    border-bottom: 1px solid #f0f0f2;
+}
+.logo-box {
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(145deg, #8b7cf8, #5b52e8);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    line-height: 1;
+}
+.logo-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+[data-testid="stSidebar"] .stSelectbox > div > div {
+    background: #f8f9fb !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 8px !important;
+    min-height: 34px !important;
+    font-size: 11.5px !important;
+    font-weight: 500 !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stRadio"] > div {
+    flex-direction: column !important;
+    gap: 8px !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stRadio"] label {
+    background: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 10px !important;
+    padding: 11px 14px !important;
+    width: 100% !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stRadio"] label:has(input[type="radio"]:checked):nth-of-type(1) {
+    background: #e8f1fc !important;
+    border-color: #2e75d1 !important;
+}
+[data-testid="stSidebar"] [data-testid="stRadio"] label:has(input[type="radio"]:checked):nth-of-type(1) p {
+    color: #1d5fbf !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stRadio"] label:has(input[type="radio"]:checked):nth-of-type(2) {
+    background: #e6f9f0 !important;
+    border-color: #059669 !important;
+}
+[data-testid="stSidebar"] [data-testid="stRadio"] label:has(input[type="radio"]:checked):nth-of-type(2) p {
+    color: #059669 !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stRadio"] label div[data-testid="stMarkdownContainer"] p {
+    font-size: 11.5px !important;
+    font-weight: 500 !important;
+    color: #374151 !important;
+    margin: 0 !important;
+}
+
+/* Hide radio circles robustly */
+[data-testid="stSidebar"] [data-testid="stRadio"] label > div:first-child,
+[data-testid="stSidebar"] [data-testid="stRadio"] label div[data-testid="stRadio-option-label"],
+[data-testid="stSidebar"] [data-testid="stRadio"] label div[role="presentation"] {
+    display: none !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stRadio"] label input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+[data-testid="stSidebar"] [data-testid="stSlider"] {
+    padding: 0 0.15rem !important;
+}
+
+[data-testid="stSidebar"] div.stButton > button {
+    width: 100% !important;
+    margin-top: 1.25rem !important;
+    background: #2e75d1 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 0.62rem 1rem !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    box-shadow: 0 2px 8px rgba(46, 117, 209, 0.35) !important;
+}
+
+[data-testid="stSidebar"] div.stButton > button:hover {
+    background: #2568bd !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+.sidebar-stats {
+    background: #f4f6f9;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-top: 1.5rem;
+    border: 1px solid #eef0f4;
+}
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2px 0;
+}
+.stat-name { font-size: 10.5px; color: #6b7280; }
+.stat-value { font-size: 10.5px; font-weight: 700; color: #1a1a1a; }
+
+/* Button Styling */
+[data-testid="stSidebar"] div.stButton > button {
+    font-size: 10.5px !important;
+    font-weight: 600 !important;
+    padding: 0.35rem 0.6rem !important;
+}
+
+/* Dropdown / Popover Styling */
+div[data-baseweb="popover"], div[data-baseweb="popover"] * {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+div[data-baseweb="popover"] li {
+    font-size: 11.5px !important;
+}
 </style>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 
-# ── Metric values — 04_evaluation.ipynb 
-CF_RMSE       = 1.1673  
-CF_MAE        = 1.0330  
-CF_PRECISION  = 0.0357  
-CF_RECALL     = 0.1696   
-CBF_PRECISION = 0.0000   
-CBF_RECALL    = 0.0000   
-# ────────────────────────────────────────
 @st.cache_data
 def load_data():
-    interactions = pd.read_csv('data/interactions.csv')
-    items        = pd.read_csv('data/items.csv')
-    players      = pd.read_csv('data/players.csv')
-    cf_results   = pd.read_csv('outputs/cf_results.csv')
-    cbf_results  = pd.read_csv('outputs/cbf_results.csv')
+    interactions = pd.read_csv("data/interactions.csv")
+    items = pd.read_csv("data/items.csv")
+    players = pd.read_csv("data/players.csv")
+    cf_results = pd.read_csv("outputs/cf_results.csv")
+    cbf_results = pd.read_csv("outputs/cbf_results.csv")
     return interactions, items, players, cf_results, cbf_results
 
-@st.cache_resource
-def load_models():
-    with open('models/cf_model.pkl', 'rb') as f:
-        cf_model = pickle.load(f)
-    with open('models/cbf_similarity.pkl', 'rb') as f:
-        cbf_similarity = pickle.load(f)
-    return cf_model, cbf_similarity
 
 interactions, items, players, cf_results, cbf_results = load_data()
-cf_model, cbf_similarity = load_models()
 
-
-# ── Recommendation functions ──────────────────────────────────────────────────
-def get_cf_recommendations(player_id, n=5):
-    """cf_results.csv ගෙන් top-N recommendations"""
-    recs = cf_results[cf_results['player_id'] == player_id].copy()
-    recs = recs.sort_values('rank').head(n)
-    return list(zip(recs['item_name'], recs['predicted_score'].round(2)))
-
-def get_cbf_recommendations(player_id, n=5):
-    """cbf_results.csv ගෙන් top-N recommendations"""
-    recs = cbf_results[cbf_results['player_id'] == player_id].copy()
-    recs = recs.sort_values('rank').head(n)
-    return list(zip(recs['item_name'], recs['similarity_score'].round(4)))
-
-
-# ── Helper maps ───────────────────────────────────────────────────────────────
-RARITY_BG = {
-    'Legendary': '#FAEEDA', 'Epic': '#EEEDFE',
-    'Rare': '#E6F1FB', 'Uncommon': '#E1F5EE', 'Common': '#F4F4F5',
+# Filter and update player styles as requested
+target_ids = [1, 7, 12, 25, 38, 50, 63, 74, 89, 99]
+style_map = {
+    1: "Aggressive",
+    7: "Sniper",
+    12: "Explorer",
+    25: "Collector",
+    38: "Support",
+    50: "Sniper",
+    63: "Aggressive",
+    74: "Collector",
+    89: "Explorer",
+    99: "Support",
 }
-CATEGORY_ICON = {
-    'Weapon': '⚔️', 'Outfit': '👘', 'Emote': '💃',
-    'Vehicle': '🚗', 'Mission': '🎯',
-}
-STYLE_BADGE = {
-    'aggressive': 'badge-aggressive', 'explorer': 'badge-explorer',
-    'support': 'badge-support', 'collector': 'badge-collector', 'sniper': 'badge-sniper',
-}
-
-def get_item_info(item_name):
-    row = items[items['item_name'] == item_name]
-    return row.iloc[0] if not row.empty else None
+players = players[players["player_id"].isin(target_ids)].copy()
+players["play_style"] = players["player_id"].map(style_map)
+players = players.sort_values(by="player_id")
+n_categories = int(items["category"].nunique())
 
 
-# ── SIDEBAR ───────────────────────────────────────────────────────────────────
+def player_label(row) -> str:
+    return f"{row['player_name']} — {str(row['play_style']).capitalize()}"
+
+
+def sidebar_label(text: str, right: str = "") -> None:
+    right_html = f'<span class="k-value">{right}</span>' if right else ""
+    st.sidebar.markdown(
+        f'<p class="sidebar-label">{text}{right_html}</p>',
+        unsafe_allow_html=True,
+    )
+
+
+# ── Sidebar ──────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown(
-        '<div class="sidebar-logo"><div class="logo-box"></div>GameRec</div>',
-        unsafe_allow_html=True
+        """
+        <div class="sidebar-logo">
+            <div class="logo-box">🎮</div>
+            <span class="logo-text">GameRec System</span>
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
 
-    st.markdown('<p style="font-size:10.5px;font-weight:500;color:#A1A1AA;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Select Player</p>', unsafe_allow_html=True)
-    player_options = [
-        f"{row['player_name']} ({row['play_style']})"
-        for _, row in players.iterrows()
-    ]
-    selected_label     = st.selectbox("Select Player", player_options, label_visibility="collapsed")
-    selected_name      = selected_label.split(" (")[0]
-    selected_player    = players[players['player_name'] == selected_name].iloc[0]
-    selected_player_id = int(selected_player['player_id'])
+    sidebar_label("SELECT PLAYER")
+    player_options = [player_label(row) for _, row in players.iterrows()]
+    match = players[players["player_name"] == "Player_7"]
+    default_idx = int(match.index[0]) if len(match) else 0
 
-    st.markdown('<p style="font-size:10.5px;font-weight:500;color:#A1A1AA;text-transform:uppercase;letter-spacing:0.06em;margin:1rem 0 4px;">Model</p>', unsafe_allow_html=True)
+    selected_label = st.selectbox(
+        "Player",
+        player_options,
+        index=default_idx,
+        label_visibility="collapsed",
+    )
+    selected_player_id = int(
+        players.iloc[player_options.index(selected_label)]["player_id"]
+    )
+
+    sidebar_label("SELECT MODEL")
     model_choice = st.radio(
-        "Model", ["Collaborative Filtering", "Content-Based Filtering"],
-        label_visibility="collapsed"
+        "Model",
+        ["⚡ Collaborative Filtering", "🔍 Content-Based Filtering"],
+        label_visibility="collapsed",
     )
+    is_cbf = "Content-Based" in model_choice
 
-    st.markdown('<p style="font-size:10.5px;font-weight:500;color:#A1A1AA;text-transform:uppercase;letter-spacing:0.06em;margin:1rem 0 4px;">Top K Items</p>', unsafe_allow_html=True)
-    top_k = st.slider("Top K", min_value=3, max_value=10, value=5, label_visibility="collapsed")
+    if "get_recs" not in st.session_state:
+        st.session_state.get_recs = False
 
-    btn_clicked = st.button("🎯  Get Recommendations")
+    if "top_k" not in st.session_state:
+        st.session_state.top_k = 3
+
+    sidebar_label("TOP K ITEMS", str(st.session_state.top_k))
+    top_k = st.slider(
+        "K",
+        min_value=3,
+        max_value=10,
+        value=st.session_state.top_k,
+        label_visibility="collapsed",
+        key="top_k_slider",
+    )
+    st.session_state.top_k = top_k
+
+    if st.button("🎯 Get Recommendations"):
+        st.session_state.get_recs = True
+    
+    get_recs = st.session_state.get_recs
 
     st.markdown(
-        f'<div class="stats-bar">{len(players)} players · {len(items)} items · {len(interactions)} interactions</div>',
-        unsafe_allow_html=True
+        f"""
+        <div class="sidebar-stats">
+            <div class="stat-row"><span class="stat-name">👥 Players</span><span class="stat-value">{len(players)}</span></div>
+            <div class="stat-row"><span class="stat-name">🎮 Items</span><span class="stat-value">{len(items)}</span></div>
+            <div class="stat-row"><span class="stat-name">⭐ Interactions</span><span class="stat-value">{len(interactions)}</span></div>
+            <div class="stat-row"><span class="stat-name">📦 Categories</span><span class="stat-value">{n_categories}</span></div>
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
 
 
-# ── MAIN ──────────────────────────────────────────────────────────────────────
-st.markdown('<p class="page-title">Recommendations</p>', unsafe_allow_html=True)
-st.markdown(f'<p class="page-sub">Top {top_k} items suggested for this player</p>', unsafe_allow_html=True)
+def page_css() -> str:
+    return """
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: #f0f2f6;
+        color: #111827;
+    }
+    .wrap { width: 100%; }
+    .main-header-card {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 12px 20px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        border: 1px solid #eef0f4;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+    }
+    .header-title {
+        font-size: 17px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 4px;
+    }
+    .header-subtitle { font-size: 12px; color: #9ca3af; }
+    .header-badges { display: flex; gap: 8px; flex-shrink: 0; }
+    .badge {
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+    .badge-blue   { background: #e8f1fc; color: #2e75d1; }
+    .badge-green  { background: #e6f9f0; color: #059669; }
+    .badge-purple { background: #f3f0ff; color: #7c3aed; }
+    .landing {
+        min-height: auto;
+        display: flex;
+        flex-direction: column;
+        padding-top: 0px;
+    }
+    .hero {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        text-align: center;
+        padding: 5px 24px 20px;
+    }
+    .icon-box {
+        width: 64px;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        margin-bottom: 20px;
+    }
+    .welcome-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 12px;
+    }
+    .welcome-text {
+        font-size: 14px;
+        color: #6b7280;
+        max-width: 500px;
+        line-height: 1.65;
+    }
+    .welcome-text strong { color: #4b5563; font-weight: 600; }
+    .feature-cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        width: 100%;
+        margin-top: 56px;
+    }
+    .f-card {
+        background: #ffffff;
+        border-radius: 14px;
+        padding: 22px 18px;
+        border: 1px solid #eef0f4;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        text-align: center;
+    }
+    .f-icon { font-size: 22px; margin-bottom: 12px; display: block; }
+    .f-title { font-size: 13px; font-weight: 700; color: #111827; margin-bottom: 8px; }
+    .f-desc { font-size: 11.5px; color: #9ca3af; line-height: 1.55; }
+    .results-wrap { padding-top: 20px; }
+    .results-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+    }
+    .results-title { font-size: 18px; font-weight: 700; }
+    .results-subtitle { font-size: 13px; color: #6b7280; margin-top: 3px; }
+    .model-pill {
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    .pill-cf  { background: #e8f1fc; color: #2e75d1; }
+    .pill-cbf { background: #e6f9f0; color: #059669; }
+    .rec-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+    }
+    .rec-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 14px;
+        border: 1px solid #eef0f4;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+    }
+    .rec-rank {
+        width: 28px; height: 28px;
+        background: #2e75d1; color: #fff;
+        border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 12px; font-weight: 700; flex-shrink: 0;
+    }
+    .rec-body { flex: 1; }
+    .rec-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .rec-meta { font-size: 11px; color: #9ca3af; }
+    .rec-score { font-size: 13px; font-weight: 700; color: #2e75d1; }
+    .cat-weapon { color: #dc2626; }
+    .cat-skin { color: #7c3aed; }
+    .cat-mission { color: #d97706; }
+    """
 
-if btn_clicked:
 
-    # Player banner
-    style       = str(selected_player.get('play_style', '')).lower()
-    level       = selected_player.get('level', '?')
-    p_rated     = interactions[interactions['player_id'] == selected_player_id]
-    avg_r       = round(p_rated['rating'].mean(), 1) if len(p_rated) > 0 else '–'
-    n_rated     = len(p_rated)
-    initials    = selected_name[:2].upper()
-    badge_cls   = STYLE_BADGE.get(style, 'badge-aggressive')
-    model_short = "Collaborative" if model_choice == "Collaborative Filtering" else "Content-Based"
-
-    st.markdown(f"""
-    <div class="player-banner">
-      <div class="avatar">{initials}</div>
-      <div>
-        <div class="player-name">{selected_name} <span class="badge {badge_cls}">{style.capitalize()}</span></div>
-        <div class="player-meta">Level {level} &nbsp;·&nbsp; {n_rated} items rated &nbsp;·&nbsp; Avg rating {avg_r}</div>
-      </div>
-      <div style="margin-left:auto;text-align:right;">
-        <div class="model-badge-label">Model</div>
-        <div class="model-badge">{model_short}</div>
-      </div>
+def header_html() -> str:
+    return """
+    <div class="main-header-card">
+        <div>
+            <div class="header-title">In-Game Recommendation System</div>
+            <div class="header-subtitle">Battle Royale Edition · Weapons · Skins · Missions</div>
+        </div>
+        <div class="header-badges">
+            <span class="badge badge-blue">Collaborative Filtering</span>
+            <span class="badge badge-green">Content-Based</span>
+            <span class="badge badge-purple">Evaluated</span>
+        </div>
     </div>
-    """, unsafe_allow_html=True)
+    """
 
-    tab1, tab2, tab3 = st.tabs(["🎯 Top picks", "📋 Item details", "📊 Model metrics"])
 
-    # ── TAB 1 ──────────────────────────────────────────────────────────────
-    with tab1:
-        sel_precision = CF_PRECISION if model_choice == "Collaborative Filtering" else CBF_PRECISION
-        sel_recall    = CF_RECALL    if model_choice == "Collaborative Filtering" else CBF_RECALL
-
-        mc1, mc2 = st.columns(2)
-        mc1.markdown(f'<div class="metric-card"><div class="metric-label">Precision@5</div><div class="metric-val">{sel_precision:.4f}</div></div>', unsafe_allow_html=True)
-        mc2.markdown(f'<div class="metric-card"><div class="metric-label">Recall@5</div><div class="metric-val">{sel_recall:.4f}</div></div>', unsafe_allow_html=True)
-
-        st.markdown('<div class="section-title" style="margin-top:1rem;">Recommended items</div>', unsafe_allow_html=True)
-
-        with st.spinner("Getting recommendations…"):
-            if model_choice == "Collaborative Filtering":
-                recs = get_cf_recommendations(selected_player_id, n=top_k)
-            else:
-                recs = get_cbf_recommendations(selected_player_id, n=top_k)
-
-        if not recs:
-            st.warning(f"No recommendations found for {selected_name}.")
-        else:
-            max_score = float(recs[0][1]) if recs[0][1] > 0 else 1.0
-
-            for rank, (item_name, score) in enumerate(recs, 1):
-                info = get_item_info(item_name)
-
-                if info is not None:
-                    category  = str(info.get('category', 'Item'))
-                    item_type = str(info.get('type', '–'))
-                    rarity    = str(info.get('rarity', 'Common'))
-                    damage    = info.get('damage', '–')
-                    price     = info.get('price', '–')
-                    rng       = info.get('range', '–')
-                else:
-                    category, item_type, rarity = 'Item', '–', 'Common'
-                    damage, price, rng = '–', '–', '–'
-
-                icon    = CATEGORY_ICON.get(category, '🎮')
-                bg      = RARITY_BG.get(rarity, '#F4F4F5')
-                r_cls   = f'rarity-{rarity}'
-                bar_pct = int((float(score) / max_score) * 100)
-                score_display = f"{score:.2f}" if float(score) > 1 else f"{score:.4f}"
-
-                st.markdown(f"""
-                <div class="item-card">
-                  <div class="rank">#{rank}</div>
-                  <div class="item-icon" style="background:{bg};">{icon}</div>
-                  <div style="flex:1;min-width:0;">
-                    <div class="item-name">{item_name}</div>
-                    <div class="item-type">{item_type}</div>
-                    <div class="stat-row">
-                      <span class="stat">DMG {damage}</span>
-                      <span class="stat">RNG {rng}</span>
-                      <span class="stat">{price}g</span>
-                    </div>
-                  </div>
-                  <span class="rarity {r_cls}">{rarity}</span>
-                  <div class="score-wrap">
-                    <div class="score-bar-bg"><div class="score-bar" style="width:{bar_pct}%;"></div></div>
-                    <span class="score-val">{score_display}</span>
-                  </div>
+def landing_html() -> str:
+    return f"""
+    <!DOCTYPE html>
+    <html><head><meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>{page_css()}</style>
+    </head><body>
+    <div class="wrap">
+        {header_html()}
+        <div class="landing">
+            <div class="hero">
+                <div class="icon-box">🎮</div>
+                <div class="welcome-title">Battle Royale Item Recommender</div>
+                <p class="welcome-text">
+                    Select a player and a recommendation model from the sidebar,
+                    then click <strong>Get Recommendations</strong> to see personalised item suggestions.
+                </p>
+            </div>
+            <div class="feature-cards">
+                <div class="f-card">
+                    <span class="f-icon">⚡</span>
+                    <div class="f-title">Collaborative Filtering</div>
+                    <div class="f-desc">Finds players similar to you and recommends what they liked using SVD matrix decomposition.</div>
                 </div>
-                """, unsafe_allow_html=True)
-
-    # ── TAB 2 ──────────────────────────────────────────────────────────────
-    with tab2:
-        st.markdown('<div class="section-title">Full item details</div>', unsafe_allow_html=True)
-        if recs:
-            rec_names = [r[0] for r in recs]
-            detail_df = items[items['item_name'].isin(rec_names)].copy()
-            rank_map  = {name: i+1 for i, (name, _) in enumerate(recs)}
-            detail_df['rank'] = detail_df['item_name'].map(rank_map)
-            detail_df = detail_df.sort_values('rank').drop(columns=['rank'])
-            st.dataframe(detail_df, use_container_width=True, hide_index=True)
-        else:
-            st.info("Get recommendations first.")
-
-    # ── TAB 3 ──────────────────────────────────────────────────────────────
-    with tab3:
-        st.markdown('<div class="section-title">Model performance metrics</div>', unsafe_allow_html=True)
-
-        m1, m2, m3, m4 = st.columns(4)
-        m1.markdown(f'<div class="metric-card"><div class="metric-label">CF RMSE</div><div class="metric-val">{CF_RMSE:.4f}</div></div>', unsafe_allow_html=True)
-        m2.markdown(f'<div class="metric-card"><div class="metric-label">CF MAE</div><div class="metric-val">{CF_MAE:.4f}</div></div>', unsafe_allow_html=True)
-        m3.markdown(f'<div class="metric-card"><div class="metric-label">CF Precision@5</div><div class="metric-val">{CF_PRECISION:.4f}</div></div>', unsafe_allow_html=True)
-        m4.markdown(f'<div class="metric-card"><div class="metric-label">CF Recall@5</div><div class="metric-val">{CF_RECALL:.4f}</div></div>', unsafe_allow_html=True)
-
-        st.markdown("<br>", unsafe_allow_html=True)
-        mc1, mc2 = st.columns(2)
-        mc1.markdown(f'<div class="metric-card"><div class="metric-label">CBF Precision@5</div><div class="metric-val">{CBF_PRECISION:.4f}</div></div>', unsafe_allow_html=True)
-        mc2.markdown(f'<div class="metric-card"><div class="metric-label">CBF Recall@5</div><div class="metric-val">{CBF_RECALL:.4f}</div></div>', unsafe_allow_html=True)
-
-        st.markdown("<br>", unsafe_allow_html=True)
-        if os.path.exists('outputs/metrics_chart.png'):
-            st.image('outputs/metrics_chart.png', use_column_width=True)
-        else:
-            st.info("metrics_chart.png එක නෑ — 04_evaluation.ipynb run කරන්න.")
-
-else:
-    st.markdown("""
-    <div style="text-align:center;padding:5rem 2rem;color:#A1A1AA;">
-      <div style="font-size:52px;margin-bottom:1rem;">🎮</div>
-      <div style="font-size:15px;font-weight:500;color:#71717A;margin-bottom:8px;">Ready to recommend</div>
-      <div style="font-size:13px;">Select a player and model from the sidebar,<br>then click <strong>Get Recommendations</strong></div>
+                <div class="f-card">
+                    <span class="f-icon">🔍</span>
+                    <div class="f-title">Content-Based Filtering</div>
+                    <div class="f-desc">Recommends items with similar features to what you already rated 4 or 5 stars using cosine similarity.</div>
+                </div>
+                <div class="f-card">
+                    <span class="f-icon">📊</span>
+                    <div class="f-title">Full Evaluation</div>
+                    <div class="f-desc">Both models evaluated using Precision@5, Recall@5, RMSE, and MAE with comparison charts.</div>
+                </div>
+            </div>
+        </div>
     </div>
-    """, unsafe_allow_html=True)
+    </body></html>
+    """
 
+
+def get_recommendations(player_id: int, use_cbf: bool, k: int) -> pd.DataFrame:
+    if use_cbf:
+        recs = cbf_results[cbf_results["player_id"] == player_id].copy()
+        recs = recs[recs["rank"] <= k]
+        recs = recs.merge(
+            items[["item_name", "category", "rarity"]], on="item_name", how="left"
+        )
+        recs["score"] = recs["similarity_score"]
+    else:
+        recs = cf_results[cf_results["player_id"] == player_id].copy()
+        recs = recs[recs["rank"] <= k]
+        recs = recs.merge(
+            items[["item_id", "category", "rarity"]], on="item_id", how="left"
+        )
+        recs["score"] = recs["predicted_score"]
+    return recs.sort_values("rank")
+
+
+def category_class(cat: str) -> str:
+    c = str(cat).lower()
+    if c == "weapon":
+        return "cat-weapon"
+    if c == "skin":
+        return "cat-skin"
+    return "cat-mission"
+
+
+def results_html(player_label: str, use_cbf: bool, k: int, player_id: int) -> str:
+    recs = get_recommendations(player_id, use_cbf, k)
+    model_name = "Content-Based Filtering" if use_cbf else "Collaborative Filtering"
+    pill_class = "pill-cbf" if use_cbf else "pill-cf"
+
+    cards = ""
+    for _, row in recs.iterrows():
+        cat = row.get("category", "Item")
+        cat_cls = category_class(cat)
+        rarity = row.get("rarity", "")
+        rarity_txt = (
+            f" · {rarity}"
+            if pd.notna(rarity) and str(rarity) not in ("", "nan")
+            else ""
+        )
+        cards += f"""
+        <div class="rec-card">
+            <div class="rec-rank">{int(row['rank'])}</div>
+            <div class="rec-body">
+                <div class="rec-name">{row['item_name']}</div>
+                <div class="rec-meta"><span class="{cat_cls}">{cat}</span>{rarity_txt}</div>
+            </div>
+            <div class="rec-score">{row['score']:.4f}</div>
+        </div>
+        """
+
+    return f"""
+    <!DOCTYPE html>
+    <html><head><meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>{page_css()}</style>
+    </head><body>
+    <div class="wrap">
+        {header_html()}
+        <div class="results-wrap">
+            <div class="results-header">
+                <div>
+                    <div class="results-title">Recommendations</div>
+                    <div class="results-subtitle">{player_label} · Top {k} items</div>
+                </div>
+                <span class="model-pill {pill_class}">{model_name}</span>
+            </div>
+            <div class="rec-grid">{cards}</div>
+        </div>
+    </div>
+    </body></html>
+    """
+
+
+# ── Main content ─────────────────────────────────────────────────────────────
+if get_recs:
+    components.html(
+        results_html(selected_label, is_cbf, top_k, selected_player_id),
+        height=520,
+        scrolling=False,
+    )
+else:
+    components.html(landing_html(), height=580, scrolling=False)
