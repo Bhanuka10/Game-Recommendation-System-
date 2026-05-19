@@ -2,6 +2,7 @@
 import streamlit as st
 import streamlit.components.v1 as components
 import pandas as pd
+import pickle
 
 st.set_page_config(
     page_title="GameRec System",
@@ -308,12 +309,29 @@ def load_data():
     interactions = pd.read_csv("data/interactions.csv")
     items = pd.read_csv("data/items.csv")
     players = pd.read_csv("data/players.csv")
-    cf_results = pd.read_csv("outputs/cf_results.csv")
-    cbf_results = pd.read_csv("outputs/cbf_results.csv")
-    return interactions, items, players, cf_results, cbf_results
+    return interactions, items, players
 
 
-interactions, items, players, cf_results, cbf_results = load_data()
+@st.cache_resource
+def load_models():
+    cf_model = None
+    cf_results = pd.DataFrame()
+    try:
+        with open("models/cf_model.pkl", "rb") as file:
+            cf_model = pickle.load(file)
+    except ModuleNotFoundError:
+        try:
+            cf_results = pd.read_csv("outputs/cf_results.csv")
+        except FileNotFoundError:
+            cf_results = pd.DataFrame()
+
+    with open("models/cbf_similarity.pkl", "rb") as file:
+        cbf_similarity = pickle.load(file)
+    return cf_model, cbf_similarity, cf_results
+
+
+interactions, items, players = load_data()
+cf_model, cbf_similarity, cf_results = load_models()
 
 # Filter and update player styles as requested
 target_ids = [1, 7, 12, 25, 38, 50, 63, 74, 89, 99]
@@ -806,6 +824,77 @@ def landing_html() -> str:
     """
 
 
+def _fallback_popular_items(k: int) -> pd.DataFrame:
+    grouped = (
+        interactions.groupby(["item_id", "item_name"], as_index=False)["rating"]
+        .mean()
+        .sort_values("rating", ascending=False)
+        .head(k)
+    )
+    grouped["similarity_score"] = grouped["rating"].fillna(0) / 5.0
+    grouped["rank"] = range(1, len(grouped) + 1)
+    grouped["player_id"] = 0
+    return grouped[["player_id", "item_id", "item_name", "similarity_score", "rank"]]
+
+
+def _cf_recommendations(player_id: int, k: int) -> pd.DataFrame:
+    if cf_model is None:
+        if cf_results.empty:
+            return _fallback_popular_items(k)
+        recs = cf_results[cf_results["player_id"] == player_id].copy()
+        recs = recs[recs["rank"] <= k]
+        return recs[["player_id", "item_id", "item_name", "predicted_score", "rank"]]
+
+    rated_ids = set(
+        interactions.loc[interactions["player_id"] == player_id, "item_id"]
+    )
+    candidates = items[~items["item_id"].isin(rated_ids)].copy()
+    if candidates.empty:
+        return pd.DataFrame(
+            columns=["player_id", "item_id", "item_name", "predicted_score", "rank"]
+        )
+
+    def predict_score(item_id: int) -> float:
+        pred = cf_model.predict(player_id, int(item_id))
+        return float(getattr(pred, "est", pred))
+
+    candidates["predicted_score"] = candidates["item_id"].apply(predict_score)
+    recs = candidates.sort_values("predicted_score", ascending=False).head(k).copy()
+    recs["player_id"] = player_id
+    recs["rank"] = range(1, len(recs) + 1)
+    return recs[["player_id", "item_id", "item_name", "predicted_score", "rank"]]
+
+
+def _cbf_recommendations(player_id: int, k: int) -> pd.DataFrame:
+    player_data = interactions[interactions["player_id"] == player_id]
+    liked_items = player_data[player_data["rating"] >= 4]["item_name"].tolist()
+
+    if not liked_items and len(player_data):
+        best_row = player_data.sort_values("rating", ascending=False).iloc[0]
+        liked_items = [best_row["item_name"]]
+
+    valid_liked = [item for item in liked_items if item in cbf_similarity.index]
+    if not valid_liked:
+        fallback = _fallback_popular_items(k).copy()
+        fallback["player_id"] = player_id
+        return fallback[["player_id", "item_name", "similarity_score", "rank"]]
+
+    combined_scores = cbf_similarity[valid_liked].sum(axis=1) / len(valid_liked)
+    already_rated = set(player_data["item_name"].tolist())
+    combined_scores = combined_scores.drop(labels=list(already_rated), errors="ignore")
+    top = combined_scores.sort_values(ascending=False).head(k)
+
+    recs = pd.DataFrame(
+        {
+            "player_id": player_id,
+            "item_name": top.index,
+            "similarity_score": top.values,
+            "rank": range(1, len(top) + 1),
+        }
+    )
+    return recs
+
+
 def get_recommendations(player_id: int, use_cbf: bool, k: int) -> pd.DataFrame:
     item_cols = [
         "item_id",
@@ -821,13 +910,11 @@ def get_recommendations(player_id: int, use_cbf: bool, k: int) -> pd.DataFrame:
         "difficulty",
     ]
     if use_cbf:
-        recs = cbf_results[cbf_results["player_id"] == player_id].copy()
-        recs = recs[recs["rank"] <= k]
+        recs = _cbf_recommendations(player_id, k)
         recs = recs.merge(items[item_cols], on="item_name", how="left")
         recs["score"] = recs["similarity_score"]
     else:
-        recs = cf_results[cf_results["player_id"] == player_id].copy()
-        recs = recs[recs["rank"] <= k]
+        recs = _cf_recommendations(player_id, k)
         recs = recs.merge(items[item_cols], on="item_id", how="left")
         recs["score"] = recs["predicted_score"]
     return recs.sort_values("rank")
