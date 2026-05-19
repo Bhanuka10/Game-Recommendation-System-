@@ -1067,6 +1067,23 @@ def results_html(player_label: str, use_cbf: bool, k: int, player_id: int) -> st
         </div>
         """
 
+    tab_script = """
+    <script>
+        function showTab(tab) {
+            ["top", "metrics", "insights"].forEach(function(t) {
+                var el = document.getElementById("tab" + t.charAt(0).toUpperCase() + t.slice(1));
+                if (el) {
+                    el.classList.toggle("hidden", t !== tab);
+                }
+            });
+            var tabs = document.querySelectorAll(".tab");
+            tabs.forEach(function(el, i) {
+                el.classList.toggle("active", ["top", "metrics", "insights"][i] === tab);
+            });
+        }
+    </script>
+    """
+
     return f"""
     <!DOCTYPE html>
     <html><head><meta charset="utf-8">
@@ -1291,20 +1308,7 @@ def results_html(player_label: str, use_cbf: bool, k: int, player_id: int) -> st
             </div>
         </div>
     </div>
-    <script>
-        function showTab(tab) {{
-            ["top", "metrics", "insights"].forEach(function(t) {{
-                var el = document.getElementById("tab" + t.charAt(0).toUpperCase() + t.slice(1));
-                if (el) {{
-                    el.classList.toggle("hidden", t !== tab);
-                }}
-            }});
-            var tabs = document.querySelectorAll(".tab");
-            tabs.forEach(function(el, i) {{
-                el.classList.toggle("active", ["top", "metrics", "insights"][i] === tab);
-            }});
-        }}
-    </script>
+    {tab_script}
     </body></html>
     """
 
