@@ -23,9 +23,9 @@ html, body, [class*="css"] {
 }
 
 html, body, #root, .stApp, [data-testid="stAppViewContainer"], .main, .block-container {
-    overflow: hidden !important;
-    height: 100vh !important;
-    max-height: 100vh !important;
+    overflow: visible !important;
+    height: auto !important;
+    max-height: none !important;
 }
 
 [data-testid="stAppViewContainer"] {
@@ -517,6 +517,23 @@ def page_css() -> str:
         grid-template-columns: repeat(3, 1fr);
         gap: 14px;
     }
+    .section {
+        margin-bottom: 18px;
+    }
+    .section-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: #111827;
+        margin: 8px 0 10px;
+    }
+    .empty-msg {
+        font-size: 12px;
+        color: #9ca3af;
+        padding: 10px 12px;
+        background: #fafafa;
+        border: 1px dashed #e5e7eb;
+        border-radius: 10px;
+    }
     .rec-card {
         background: #fff;
         border-radius: 12px;
@@ -628,29 +645,58 @@ def category_class(cat: str) -> str:
     return "cat-mission"
 
 
+def normalize_category(cat: str) -> str:
+    c = str(cat).strip().lower()
+    if c in ("weapon", "weapons"):
+        return "Weapon"
+    if c in ("skin", "skins"):
+        return "Skin"
+    if c in ("mission", "missions"):
+        return "Mission"
+    return "Other"
+
+
 def results_html(player_label: str, use_cbf: bool, k: int, player_id: int) -> str:
     recs = get_recommendations(player_id, use_cbf, k)
     model_name = "Content-Based Filtering" if use_cbf else "Collaborative Filtering"
     pill_class = "pill-cbf" if use_cbf else "pill-cf"
 
-    cards = ""
-    for _, row in recs.iterrows():
-        cat = row.get("category", "Item")
-        cat_cls = category_class(cat)
-        rarity = row.get("rarity", "")
-        rarity_txt = (
-            f" · {rarity}"
-            if pd.notna(rarity) and str(rarity) not in ("", "nan")
-            else ""
-        )
-        cards += f"""
-        <div class="rec-card">
-            <div class="rec-rank">{int(row['rank'])}</div>
-            <div class="rec-body">
-                <div class="rec-name">{row['item_name']}</div>
-                <div class="rec-meta"><span class="{cat_cls}">{cat}</span>{rarity_txt}</div>
+    def build_cards(section_recs: pd.DataFrame) -> str:
+        if section_recs.empty:
+            return '<div class="empty-msg">No recommendations yet.</div>'
+        cards_html = ""
+        for _, row in section_recs.iterrows():
+            cat_label = normalize_category(row.get("category", "Item"))
+            cat_cls = category_class(cat_label)
+            rarity = row.get("rarity", "")
+            rarity_txt = (
+                f" · {rarity}"
+                if pd.notna(rarity) and str(rarity) not in ("", "nan")
+                else ""
+            )
+            cards_html += f"""
+            <div class="rec-card">
+                <div class="rec-rank">{int(row['rank'])}</div>
+                <div class="rec-body">
+                    <div class="rec-name">{row['item_name']}</div>
+                    <div class="rec-meta"><span class="{cat_cls}">{cat_label}</span>{rarity_txt}</div>
+                </div>
+                <div class="rec-score">{row['score']:.4f}</div>
             </div>
-            <div class="rec-score">{row['score']:.4f}</div>
+            """
+        return cards_html
+
+    section_order = ["Weapon", "Skin", "Mission"]
+    recs = recs.copy()
+    recs["category_norm"] = recs["category"].apply(normalize_category)
+
+    sections_html = ""
+    for section in section_order:
+        section_recs = recs[recs["category_norm"] == section].sort_values("rank")
+        sections_html += f"""
+        <div class="section">
+            <div class="section-title">{section} Recommendations</div>
+            <div class="rec-grid">{build_cards(section_recs)}</div>
         </div>
         """
 
@@ -670,7 +716,7 @@ def results_html(player_label: str, use_cbf: bool, k: int, player_id: int) -> st
                 </div>
                 <span class="model-pill {pill_class}">{model_name}</span>
             </div>
-            <div class="rec-grid">{cards}</div>
+            {sections_html}
         </div>
     </div>
     </body></html>
@@ -681,8 +727,8 @@ def results_html(player_label: str, use_cbf: bool, k: int, player_id: int) -> st
 if get_recs:
     components.html(
         results_html(selected_label, is_cbf, top_k, selected_player_id),
-        height=520,
-        scrolling=False,
+        height=760,
+        scrolling=True,
     )
 else:
-    components.html(landing_html(), height=580, scrolling=False)
+    components.html(landing_html(), height=640, scrolling=True)
